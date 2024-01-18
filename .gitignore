@@ -35,3 +35,5 @@ _ReSharper*/
 
 # Data from docker
 docker/*/data/
+
+/node_modules
