@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@floating-ui/vue": "^1.0.4"
+  }
+}

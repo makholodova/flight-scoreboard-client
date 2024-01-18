@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+
+  <link rel="stylesheet" type="text/css" href="wwwroot/bootstrap-5.3.2-dist/css/bootstrap.min.css"/> 
+   
+</head>
+<body>
+
+<div id="app">
+    <h2>Список городов</h2>
+    <div>
+        <cityitem :city="city"
+                  :index="index"
+                  :key="index"
+                  v-for="(city, index) in cities"
+                  v-on:citydelete="remove">
+        </cityitem>
+
+    </div>
+    <div>
+        <cityform :cities="cities"></cityform>
+       <!-- <button id="create-city">Создать новый город</button>-->
+
+    </div>
+
+    
+</div>
+
+
+<script src="https://unpkg.com/vue@3.4.5"></script>
+<script src="https://unpkg.com/axios@1.6.5"></script>
+
+<script>
+	const app = Vue.createApp({
+		data() {
+			return {
+				cities: []
+
+				/* cities:[
+                     {name: 'Tom'},
+                     {name: 'Bob'},
+                     {name: 'Alice'}
+                 ]*/
+			}
+		},
+
+		methods: {
+			remove(index) {
+				this.cities.splice(index, 1)
+			}
+		},
+
+		mounted() {
+			axios
+				.get('https://localhost:7294/City')
+				.then(response => (this.cities = response.data));
+		}
+	});
+
+	app.component('cityform', {
+		props: ["cities"],
+		data() {
+			return {
+				city: {name: ''}
+			}
+		},
+		template: `
+          <div>
+            <input type="text" v-model="city.name"/>
+            <button v-on:click="cityAdd">Создать город</button>
+          </div>`,
+		methods: {
+			cityAdd(event) {
+				let obj = {name: this.city.name};
+				this.cities.push(obj);
+
+				axios.post('https://localhost:7294/City', JSON.stringify(obj)) ////не работает
+					.then(function (response) {
+						console.log(response);
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			}
+		},
+		
+	});
+
+	app.component('cityitem', {
+		props: ["city", "index"],
+		template: `
+          <div>
+            <p>{{ city.name }}
+              <button v-on:click="cityDelete(index)">Delete</button>
+            </p>
+          </div>`,
+		methods: {
+			cityDelete(index) {
+				this.$emit('citydelete', index);
+
+				axios.delete(`https://localhost:7294/City/${this.index}`)
+					.then(res => {
+						console.log(res);
+						console.log(res.data); ////////это я добавляла
+					})	
+				
+			}
+			
+		}
+	});
+
+	app.mount('#app');
+</script>
+
+<script src="wwwroot/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script> 
+
+</body>
+</html>
