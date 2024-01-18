@@ -6,6 +6,15 @@ import TheWelcome from '../components/TheWelcome.vue'
   .get('https://localhost:7294/City')
   .then(response => (props.cities = response.data));*/
 
+/*let obj = {name: "aaaaa"};
+axios.post('https://localhost:7294/City', obj) ////не работает
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });*/
+
 </script>
 
 <template>
