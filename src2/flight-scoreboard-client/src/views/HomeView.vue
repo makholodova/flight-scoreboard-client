@@ -15,10 +15,15 @@ axios.post('https://localhost:7294/City', obj) ////не работает
     console.log(error);
   });*/
 
+function abc() {
+  alert("sf");
+}
+
 </script>
 
 <template>
   <main>
+<!--    <button @click="abc">Emit event</button>-->
     <TheWelcome />
   </main>
 </template>
