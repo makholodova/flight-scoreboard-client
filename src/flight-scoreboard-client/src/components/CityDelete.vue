@@ -6,20 +6,19 @@ import axios from 'axios'
 const emit = defineEmits(['cityDelete'])
 
 function buttonClick(id) {
-  axios.delete(`https://localhost:7294/City/${id}`)
-    .then(res => {
+  axios
+    .delete(`https://localhost:7294/City/${id}`)
+    .then(() => {
       emit('cityDelete', id)
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
     })
 }
 </script>
 
 <template>
-  <button @click="buttonClick(city.id)">Delete</button>
+  <button @click="buttonClick(city.id)"> Delete/ </button>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
