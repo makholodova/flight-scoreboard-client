@@ -40,12 +40,12 @@ function airlineEdit() {
     <template v-slot:activator="{ props }">
 
       <v-btn color="green"
+             icon="mdi-pencil"
              size="x-small"
              v-bind="props"
              variant="plain"
-             icon="mdi-pencil"
       >
-        
+
       </v-btn>
 
     </template>
@@ -89,13 +89,7 @@ function airlineEdit() {
   </v-dialog>
 
 </template>
-<script>
-export default {
-  data: () => ({
-    dialog: false
-  })
-}
-</script>
+
 <style scoped>
 
 </style>

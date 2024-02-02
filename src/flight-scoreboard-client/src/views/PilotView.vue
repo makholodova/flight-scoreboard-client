@@ -6,31 +6,28 @@ import PilotEdit from '@/components/PilotEdit.vue'
 
 export default {
   components: { PilotEdit, PilotDelete, PilotCreate },
-
   data: () => ({
-    pilots: [],
-    airlines: []
+    pilots: []
   }),
   methods: {
     remove(index) {
       this.pilots.splice(index, 1)
     },
-    add(pilot) {
-      this.pilots.push(pilot)
+    add(id) {
+      axios.get(`https://localhost:7294/Pilot/${id}`)
+        .then((response) => (this.pilots.push(response.data)))
     },
-    edit(pilot, index) {
-
-      this.pilots[index] = pilot
+    edit(isUpdated, id, index) {
+      if (isUpdated) {
+        axios.get(`https://localhost:7294/Pilot/${id}`)
+          .then((response) => (this.pilots[index] = response.data))
+      }
     }
   },
   mounted() {
-
     axios.get('https://localhost:7294/Pilot').then((response) => (this.pilots = response.data))
-    
-
   }
 }
-
 </script>
 
 <template>
@@ -38,21 +35,17 @@ export default {
     <v-list-item-title> Список пилотов:</v-list-item-title>
     <v-list-item
       v-for="(pilot, index) in pilots"
-      :key="index"
+      :key="pilot.id"
     >
-
       {{ pilot.surName }} {{ pilot.name }} {{ pilot.age }} {{ pilot.airlineName }}
       <PilotDelete :pilot="pilot" @pilot-delete="(id) => remove(index)" />
-      <!--      <PilotEdit :pilot="pilot" @pilot-edit="(pilot)=> edit(pilot,index)" />-->
+      <PilotEdit :pilot="pilot" @pilot-edit="(isUpdated)=> edit(isUpdated,pilot.id,index)" />
     </v-list-item>
   </v-list>
   <div>
-    <PilotCreate @pilot-add="(pilot) => add(pilot)" />
+    <PilotCreate @pilot-add="(pilotId) => add(pilotId)" />
   </div>
-
-
 </template>
 
 <style scoped>
-
 </style>

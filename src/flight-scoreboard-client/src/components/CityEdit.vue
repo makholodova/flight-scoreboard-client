@@ -2,11 +2,8 @@
 import { ref } from 'vue'
 
 const dialog = ref(false)
-
 const emit = defineEmits(['cityEdit'])
-
 const props = defineProps(['city'])
-
 const newCity = ref({ name: props.city.name, id: props.city.id })
 
 /*const newCity2 = reactive({ name: props.city.name, id: props.city.id })*/
@@ -92,15 +89,3 @@ function cityEdit() {
   </v-dialog>
   <!--  </v-row>-->
 </template>
-
-<script>
-export default {
-  data: () => ({
-    dialog: false
-  })
-}
-</script>
-
-<style scoped>
-
-</style>

@@ -34,7 +34,7 @@ export default {
     <v-list-item-title> Авиакомпании:</v-list-item-title>
     <v-list-item
       v-for="(airline, index) in airlines"
-      :key="index"
+      :key="airline.id"
     >
       {{ airline.name }}
       <AirlineDelete :airline="airline" @airline-delete="(id) => remove(index)" />

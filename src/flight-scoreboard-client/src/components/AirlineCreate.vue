@@ -84,13 +84,5 @@ function airlineAdd() {
 
 </template>
 
-<script>
-export default {
-  data: () => ({
-    dialog: false
-  })
-}
-</script>
-
 
 <style scoped></style>

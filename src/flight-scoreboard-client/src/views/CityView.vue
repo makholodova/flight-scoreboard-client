@@ -1,4 +1,8 @@
-﻿<script>
+﻿
+
+
+
+<script>
 import axios from 'axios'
 import CityCreate from '@/components/CityCreate.vue'
 import CityDelete from '@/components/CityDelete.vue'
@@ -34,7 +38,7 @@ export default {
     <v-list-item-title> Города:</v-list-item-title>
     <v-list-item
       v-for="(city, index) in cities"
-      :key="index"
+      :key="city.id"
     >
       {{ city.name }}
       <CityDelete :city="city" @city-delete="(id) => remove(index)" />

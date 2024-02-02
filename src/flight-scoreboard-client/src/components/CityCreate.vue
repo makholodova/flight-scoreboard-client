@@ -2,10 +2,8 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-// state
 const newCity = ref({ name: '', id: 0 })
 const dialog = ref(false)
-//defineProps(['cities'])
 const emit = defineEmits(['cityAdd'])
 
 function resetState() {
@@ -13,7 +11,6 @@ function resetState() {
 }
 
 function cityAdd() {
-  /* emit('cityAdd', newCity.value);*/
   let obj = { name: newCity.value.name }
   axios
     .post('https://localhost:7294/City', newCity.value)
@@ -26,8 +23,6 @@ function cityAdd() {
       console.log(error)
     })
 }
-
-
 </script>
 
 <template>
@@ -88,13 +83,3 @@ function cityAdd() {
 
 </template>
 
-<script>
-export default {
-  data: () => ({
-    dialog: false
-  })
-}
-</script>
-
-
-<style scoped></style>

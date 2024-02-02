@@ -19,13 +19,12 @@ function buttonClick(id) { //url
 
 <template>
 
-  <v-btn size="x-small"
+  <v-btn icon="mdi-bucket"
+         size="x-small"
          variant="plain"
          @click="buttonClick(airline.id)"
-         icon="mdi-bucket"
   >
   </v-btn> <!--url-->
-  
 
 </template>
 

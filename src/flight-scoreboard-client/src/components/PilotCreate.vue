@@ -5,7 +5,6 @@ import axios from 'axios'
 const newPilot = ref({ name: '', surName: '', age: null, id: 0, airlineId: null })
 const allAirlines = ref([])
 const dialog = ref(false)
-
 const emit = defineEmits(['pilotAdd'])
 
 function resetState() {
@@ -16,23 +15,11 @@ function resetState() {
 }
 
 function pilotAdd() {
-  
-  let airlineName = allAirlines.value.find(item => item.value === newPilot.value.airlineId).title;
-   
-  let obj = {
-    name: newPilot.value.name,
-    surName: newPilot.value.surName,
-    age: newPilot.value.age,
-    airlineId: newPilot.value.airlineId,
-    airlineName: airlineName
-  }
-
   axios
     .post('https://localhost:7294/Pilot', newPilot.value)
     .then((res) => {
       resetState()
-      obj.id = res.data
-      emit('pilotAdd', obj)
+      emit('pilotAdd', res.data)
     })
     .catch(function(error) {
       console.log(error)
@@ -44,7 +31,6 @@ onMounted(() => {
     allAirlines.value = response.data.map(x => ({ value: x.id, title: x.name })
     ))
 })
-
 </script>
 
 <template>
@@ -129,11 +115,4 @@ onMounted(() => {
   </v-dialog>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    dialog: false
-  })
-}
-</script>
 
