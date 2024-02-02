@@ -5,9 +5,9 @@ import { RouterView } from 'vue-router'
 <template>
   <v-app>
 
-    <v-navigation-drawer v-model="sidebar" app>
+    <v-navigation-drawer v-model="sidebar" class="d-flex d-sm-none" app>
       <v-list>
-        <v-list-item v-for="item in menuItems"
+                <v-list-item v-for="item in menuItems"
                      :key="item.title"
                      :prepend-icon=item.icon
                      :title=item.title
@@ -16,15 +16,15 @@ import { RouterView } from 'vue-router'
       </v-list>
     </v-navigation-drawer>
 
-    
+
     <v-toolbar density="compact">
-      <v-app-bar-nav-icon class="hidden-sm-and-up" @click="sidebar = !sidebar"></v-app-bar-nav-icon>
-      
+      <v-app-bar-nav-icon class="d-flex d-sm-none" @click="sidebar = !sidebar"></v-app-bar-nav-icon>
+
       <v-toolbar-title> Flight Scoreboard</v-toolbar-title>
 
-<!--      <v-spacer></v-spacer>-->
-      
-      <v-toolbar-items class="hidden-xs-only">
+      <!--      <v-spacer></v-spacer>-->
+
+      <v-toolbar-items class="d-none d-sm-flex">
         <v-btn
           v-for="item in menuItems"
           :key="item.title"
@@ -52,9 +52,9 @@ export default {
       appTitle: 'Flight Scoreboard',
       sidebar: false,
       menuItems: [
-        { title: 'City', path: '/city', icon: 'home' }
-        /* { title: 'Sign Up', path: '/signup', icon: 'face' },
-         { title: 'Sign In', path: '/signin', icon: 'lock_open' }*/
+        { title: 'City', path: '/city', icon: 'mdi-city' },
+        { title: 'Airline', path: '/airline' },
+        { title: 'Pilot', path: '/pilot' }
       ]
     }
   }

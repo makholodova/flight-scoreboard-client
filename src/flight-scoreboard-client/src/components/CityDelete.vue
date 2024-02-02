@@ -18,7 +18,16 @@ function buttonClick(id) {
 </script>
 
 <template>
-  <button @click="buttonClick(city.id)"> Delete/ </button>
+
+  <v-btn
+    icon="mdi-bucket"
+    size="x-small"
+    variant="plain"
+    @click="buttonClick(city.id)"
+  >  
+  </v-btn>
+
+
 </template>
 
 <style scoped></style>

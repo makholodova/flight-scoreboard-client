@@ -1,15 +1,15 @@
 ﻿<script>
 import axios from 'axios'
-import CityForm from '@/components/CityForm.vue'
+import CityCreate from '@/components/CityCreate.vue'
 import CityDelete from '@/components/CityDelete.vue'
 import CityEdit from '@/components/CityEdit.vue'
 
 export default {
-  components: { CityEdit, CityDelete, CityForm },
+  components: { CityEdit, CityDelete, CityCreate },
 
   data: () => ({
-    cities: [],
-    
+    cities: []
+
   }),
   methods: {
     remove(index) {
@@ -18,9 +18,9 @@ export default {
     add(city) {
       this.cities.push(city)
     },
-    edit(city,index) {
-            
-      this.cities[index]=city;
+    edit(city, index) {
+
+      this.cities[index] = city
     }
   },
   mounted() {
@@ -30,18 +30,20 @@ export default {
 </script>
 
 <template>
+  <v-list>
+    <v-list-item-title> Города:</v-list-item-title>
+    <v-list-item
+      v-for="(city, index) in cities"
+      :key="index"
+    >
+      {{ city.name }}
+      <CityDelete :city="city" @city-delete="(id) => remove(index)" />
+      <CityEdit :city="city" @city-edit="(city)=> edit(city,index)" />
+    </v-list-item>
+  </v-list>
   <div>
-    <h2>Список городов</h2>
-    <div
-      v-for="(city, index) in cities">
-      <p>
-        {{ city.name }}{{ city.id }}
-        <CityDelete :city="city" @city-delete="(id) => remove(index)" />
-        <CityEdit :city="city" @city-edit="(city)=> edit(city,index)" />
-      </p>
-    </div>
-    <div>
-      <CityForm @city-add="(city) => add(city)" />
-    </div>
+    <CityCreate @city-add="(city) => add(city)" />
   </div>
+
+
 </template>

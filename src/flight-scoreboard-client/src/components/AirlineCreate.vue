@@ -1,69 +1,60 @@
 ﻿<script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 
+const newAirline = ref({ name: '', id: 0 })
 const dialog = ref(false)
+const emit = defineEmits(['airlineAdd'])
 
-const emit = defineEmits(['cityEdit'])
+function resetState() {
+  newAirline.value.name = ''
+}
 
-const props = defineProps(['city'])
-
-const newCity = ref({ name: props.city.name, id: props.city.id })
-
-/*const newCity2 = reactive({ name: props.city.name, id: props.city.id })*/
-
-
-function cityEdit() {
-
-  let obj = { name: newCity.value.name, id: newCity.value.id }
-  console.log(newCity.value)
-  /*  console.log(newCity2)*/
-  emit('cityEdit', obj)
-
-  /*axios
-    .post('https://localhost:7294/City', newCity.value) 
+function airlineAdd() {
+  let obj = { name: newAirline.value.name }
+  axios
+    .post('https://localhost:7294/Airline', newAirline.value)
     .then((res) => {
-      newCity.value.name = ''
+      resetState()
       obj.id = res.data
-      emit('cityEdit', obj)
+      emit('airlineAdd', obj)
     })
     .catch(function(error) {
       console.log(error)
-    })*/
+    })
 }
-
 
 </script>
 
 <template>
-  <!--  <v-row justify="center">-->
+
   <v-dialog
     v-model="dialog"
     persistent
     width="512"
   >
     <template v-slot:activator="{ props }">
-
-      <v-btn color="green"
-             icon="mdi-pencil"
-             size="x-small"
-             v-bind="props"
-             variant="plain"
+      <v-btn
+        height="36"
+        v-bind="props"
+        variant="tonal"
       >
+        Create airline
       </v-btn>
 
     </template>
 
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите название города</span>
+        <span class="text-h5">Введите название авиалинии</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newCity.name"
-                label="New city*"
+                v-model="newAirline.name"
+                label="New airline*"
                 required
               ></v-text-field>
             </v-col>
@@ -83,14 +74,14 @@ function cityEdit() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="cityEdit(); dialog = false"
+          @click="airlineAdd(); dialog = false"
         >
           Save
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <!--  </v-row>-->
+
 </template>
 
 <script>
@@ -101,6 +92,5 @@ export default {
 }
 </script>
 
-<style scoped>
 
-</style>
+<style scoped></style>

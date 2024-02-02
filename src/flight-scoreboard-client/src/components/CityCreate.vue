@@ -1,56 +1,51 @@
 ﻿<script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 
+// state
+const newCity = ref({ name: '', id: 0 })
 const dialog = ref(false)
+//defineProps(['cities'])
+const emit = defineEmits(['cityAdd'])
 
-const emit = defineEmits(['cityEdit'])
+function resetState() {
+  newCity.value.name = ''
+}
 
-const props = defineProps(['city'])
-
-const newCity = ref({ name: props.city.name, id: props.city.id })
-
-/*const newCity2 = reactive({ name: props.city.name, id: props.city.id })*/
-
-
-function cityEdit() {
-
-  let obj = { name: newCity.value.name, id: newCity.value.id }
-  console.log(newCity.value)
-  /*  console.log(newCity2)*/
-  emit('cityEdit', obj)
-
-  /*axios
-    .post('https://localhost:7294/City', newCity.value) 
+function cityAdd() {
+  /* emit('cityAdd', newCity.value);*/
+  let obj = { name: newCity.value.name }
+  axios
+    .post('https://localhost:7294/City', newCity.value)
     .then((res) => {
-      newCity.value.name = ''
+      resetState()
       obj.id = res.data
-      emit('cityEdit', obj)
+      emit('cityAdd', obj)
     })
     .catch(function(error) {
       console.log(error)
-    })*/
+    })
 }
 
 
 </script>
 
 <template>
-  <!--  <v-row justify="center">-->
+
   <v-dialog
     v-model="dialog"
     persistent
     width="512"
   >
     <template v-slot:activator="{ props }">
+      <v-btn
+        height="36"
+        v-bind="props"
+        variant="tonal"
 
-      <v-btn color="green"
-             icon="mdi-pencil"
-             size="x-small"
-             v-bind="props"
-             variant="plain"
       >
+        Create city
       </v-btn>
-
     </template>
 
     <v-card>
@@ -83,14 +78,14 @@ function cityEdit() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="cityEdit(); dialog = false"
+          @click="cityAdd(); dialog = false"
         >
           Save
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <!--  </v-row>-->
+
 </template>
 
 <script>
@@ -101,6 +96,5 @@ export default {
 }
 </script>
 
-<style scoped>
 
-</style>
+<style scoped></style>

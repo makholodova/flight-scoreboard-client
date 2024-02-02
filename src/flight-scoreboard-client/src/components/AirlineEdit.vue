@@ -3,21 +3,18 @@ import { ref } from 'vue'
 
 const dialog = ref(false)
 
-const emit = defineEmits(['cityEdit'])
+const emit = defineEmits(['airlineEdit'])
 
-const props = defineProps(['city'])
+const props = defineProps(['airline'])
 
-const newCity = ref({ name: props.city.name, id: props.city.id })
+const newAirline = ref({ name: props.airline.name, id: props.airline.id })
 
-/*const newCity2 = reactive({ name: props.city.name, id: props.city.id })*/
+function airlineEdit() {
 
-
-function cityEdit() {
-
-  let obj = { name: newCity.value.name, id: newCity.value.id }
-  console.log(newCity.value)
+  let obj = { name: newAirline.value.name, id: newAirline.value.id }
+  console.log(newAirline.value)
   /*  console.log(newCity2)*/
-  emit('cityEdit', obj)
+  emit('airlineEdit', obj)
 
   /*axios
     .post('https://localhost:7294/City', newCity.value) 
@@ -35,7 +32,6 @@ function cityEdit() {
 </script>
 
 <template>
-  <!--  <v-row justify="center">-->
   <v-dialog
     v-model="dialog"
     persistent
@@ -44,26 +40,27 @@ function cityEdit() {
     <template v-slot:activator="{ props }">
 
       <v-btn color="green"
-             icon="mdi-pencil"
              size="x-small"
              v-bind="props"
              variant="plain"
+             icon="mdi-pencil"
       >
+        
       </v-btn>
 
     </template>
 
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите название города</span>
+        <span class="text-h5">Введите название авиакомпании</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newCity.name"
-                label="New city*"
+                v-model="newAirline.name"
+                label="New airline*"
                 required
               ></v-text-field>
             </v-col>
@@ -83,16 +80,15 @@ function cityEdit() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="cityEdit(); dialog = false"
+          @click="airlineEdit(); dialog = false"
         >
           Save
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <!--  </v-row>-->
-</template>
 
+</template>
 <script>
 export default {
   data: () => ({
@@ -100,7 +96,6 @@ export default {
   })
 }
 </script>
-
 <style scoped>
 
 </style>
