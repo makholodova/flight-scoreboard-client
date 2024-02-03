@@ -1,16 +1,18 @@
 ﻿<script setup>
-defineProps(['pilot']) //url
+defineProps(['pilot'])
 import axios from 'axios'
 
-const emit = defineEmits(['pilotDelete']) //onDelete
-function buttonClick(id) { //url
+const emit = defineEmits(['pilotDelete'])
+
+function buttonClick(id) {
   axios
     .delete(`https://localhost:7294/Pilot/${id}`)
     .then(() => {
-      emit('pilotDelete', id) //url or nothing
+      emit('pilotDelete', true)
     })
     .catch((error) => {
       console.log(error)
+      emit('pilotDelete', false)
     })
 }
 </script>

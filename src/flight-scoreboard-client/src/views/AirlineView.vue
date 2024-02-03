@@ -1,31 +1,28 @@
-﻿<script>
+﻿<script setup>
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
-import AirlineCreate from '@/components/AirlineCreate.vue'
 import AirlineDelete from '@/components/AirlineDelete.vue'
 import AirlineEdit from '@/components/AirlineEdit.vue'
+import AirlineCreate from '@/components/AirlineCreate.vue'
 
-export default {
-  components: { AirlineEdit, AirlineDelete, AirlineCreate },
+const airlines = ref([])
 
-  data: () => ({
-    airlines: []
-  }),
-  methods: {
-    remove(index) {
-      this.airlines.splice(index, 1)
-    },
-    add(airline) {
-      this.airlines.push(airline)
-    },
-    edit(airline, index) {
-
-      this.airlines[index] = airline
-    }
-  },
-  mounted() {
-    axios.get('https://localhost:7294/Airline').then((response) => (this.airlines = response.data))
-  }
+function remove(index) {
+  airlines.value.splice(index, 1)
 }
+
+function add(airline) {
+  airlines.value.push(airline)
+}
+
+function edit(airline, index) {
+
+  airlines.value[index] = airline
+}
+
+onMounted(() => {
+  axios.get('https://localhost:7294/Airline').then((response) => (airlines.value = response.data))
+})
 
 </script>
 
@@ -44,10 +41,4 @@ export default {
   <div>
     <AirlineCreate @airline-add="(airline) => add(airline)" />
   </div>
-
-
 </template>
-
-<style scoped>
-
-</style>

@@ -1,36 +1,28 @@
-﻿
-
-
-
-<script>
+﻿<script setup>
+import { onMounted, ref } from 'vue'
 import axios from 'axios'
-import CityCreate from '@/components/CityCreate.vue'
 import CityDelete from '@/components/CityDelete.vue'
 import CityEdit from '@/components/CityEdit.vue'
+import CityCreate from '@/components/CityCreate.vue'
 
-export default {
-  components: { CityEdit, CityDelete, CityCreate },
+const cities = ref([])
 
-  data: () => ({
-    cities: []
-
-  }),
-  methods: {
-    remove(index) {
-      this.cities.splice(index, 1)
-    },
-    add(city) {
-      this.cities.push(city)
-    },
-    edit(city, index) {
-
-      this.cities[index] = city
-    }
-  },
-  mounted() {
-    axios.get('https://localhost:7294/City').then((response) => (this.cities = response.data))
-  }
+function remove(index) {
+  cities.value.splice(index, 1)
 }
+
+function add(city) {
+  cities.value.push(city)
+}
+
+function edit(city, index) {
+
+  cities.value[index] = city
+}
+
+onMounted(() => {
+  axios.get('https://localhost:7294/City').then((response) => (cities.value = response.data))
+})
 </script>
 
 <template>
@@ -48,6 +40,4 @@ export default {
   <div>
     <CityCreate @city-add="(city) => add(city)" />
   </div>
-
-
 </template>
