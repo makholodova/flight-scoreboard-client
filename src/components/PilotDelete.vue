@@ -5,10 +5,7 @@ defineProps(['pilot'])
 const emit = defineEmits(['pilotDeleted'])
 
 function buttonClick(id) {
-  deletePilot(id)
-    .then(() => {
-      emit('pilotDeleted')
-    })
+  deletePilot(id).then(() => emit('pilotDeleted'))
 }
 </script>
 

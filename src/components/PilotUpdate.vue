@@ -1,41 +1,36 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
+import { reactive } from 'vue'
 import { getAirlines, updatePilot } from '@/plugins/api.js'
 
 const props = defineProps(['pilot'])
 const emit = defineEmits(['pilotUpdated'])
-
-const dialog = ref(false)
-const airlines = ref([])
-
-const newPilot = ref({
-  name: props.pilot.name,
-  surName: props.pilot.surName,
-  age: props.pilot.age,
-  airlineId: props.pilot.airlineId,
-  id: props.pilot.id
-})
+const state = reactive({ dialog: false, airlines: [], newPilot: { ...props.pilot } })
 
 function buttonSaveClick() {
-  updatePilot(newPilot.value)
-    .then(() => {
-      emit('pilotUpdated')
-    })
-    .finally(() => dialog.value = false)
+  updatePilot(state.newPilot)
+    .then(() => emit('pilotUpdated'))
+    .finally(() => state.dialog = false)
 }
 
-onMounted(() => {
-  getAirlines()
-    .then(res => airlines.value = res.data.map(x => ({ value: x.id, title: x.name })))
-})
+function buttonCancelClick() {
+  state.dialog = false
+  state.newPilot = { ...props.pilot }
+}
 
+function handleDialogUpdate(isOpening) {
+  if (isOpening && state.airlines.length === 0) {
+    getAirlines()
+      .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
+  }
+}
 </script>
 
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="state.dialog"
     persistent
     width="512"
+    @update:modelValue="handleDialogUpdate"
   >
     <template v-slot:activator="{ props }">
       <v-btn color="green"
@@ -55,7 +50,7 @@ onMounted(() => {
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newPilot.surName"
+                v-model="state.newPilot.surName"
                 label="Surname"
                 required
               ></v-text-field>
@@ -64,7 +59,7 @@ onMounted(() => {
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newPilot.name"
+                v-model="state.newPilot.name"
                 label="Name*"
                 required
               ></v-text-field>
@@ -73,15 +68,15 @@ onMounted(() => {
           <v-row>
             <v-col cols="6">
               <v-text-field
-                v-model="newPilot.age"
+                v-model="state.newPilot.age"
                 label="Age*"
                 required
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-autocomplete
-                v-model="newPilot.airlineId"
-                :items="airlines"
+                v-model="state.newPilot.airlineId"
+                :items="state.airlines"
                 label="Airline"
                 placeholder="Select..."
                 required
@@ -96,9 +91,9 @@ onMounted(() => {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="dialog = false"
+          @click="buttonCancelClick()"
         >
-          Close
+          Cancel
         </v-btn>
         <v-btn
           color="blue-darken-1"

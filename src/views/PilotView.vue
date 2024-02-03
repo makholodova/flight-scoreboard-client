@@ -1,26 +1,26 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { getPilot, getPilots } from '@/plugins/api.js'
 import PilotCreate from '@/components/PilotCreate.vue'
 import PilotUpdate from '@/components/PilotUpdate.vue'
 import PilotDelete from '@/components/PilotDelete.vue'
 
-const pilots = ref([])
+const state = reactive({ pilots: [] })
 
 function create(id) {
-  getPilot(id).then(res => pilots.value.push(res.data))
+  getPilot(id).then(res => state.pilots.push(res.data))
 }
 
 function update(id, index) {
-  getPilot(id).then(res => pilots.value[index] = res.data)
+  getPilot(id).then(res => state.pilots[index] = res.data)
 }
 
 function remove(index) {
-  pilots.value.splice(index, 1)
+  state.pilots.splice(index, 1)
 }
 
 onMounted(() => {
-  getPilots().then(res => pilots.value = res.data)
+  getPilots().then(res => state.pilots = res.data)
 })
 </script>
 
@@ -28,7 +28,7 @@ onMounted(() => {
   <v-list>
     <v-list-item-title>Список пилотов:</v-list-item-title>
     <v-list-item
-      v-for="(pilot, index) in pilots"
+      v-for="(pilot, index) in state.pilots"
       :key="pilot.id"
     >
       {{ pilot.surName }} {{ pilot.name }} {{ pilot.age }} {{ pilot.airlineName }}
