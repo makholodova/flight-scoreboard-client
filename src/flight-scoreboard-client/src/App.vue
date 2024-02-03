@@ -16,10 +16,8 @@ import { RouterView } from 'vue-router'
       </v-list>
     </v-navigation-drawer>
 
-
     <v-toolbar density="compact">
       <v-app-bar-nav-icon class="d-flex d-sm-none" @click="sidebar = !sidebar"></v-app-bar-nav-icon>
-
       <v-toolbar-title> Flight Scoreboard</v-toolbar-title>
 
       <!--      <v-spacer></v-spacer>-->
@@ -40,7 +38,6 @@ import { RouterView } from 'vue-router'
     <RouterView />
 
   </v-app>
-
 </template>
 
 <script>
@@ -60,7 +57,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
