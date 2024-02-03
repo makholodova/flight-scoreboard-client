@@ -1,7 +1,7 @@
 ﻿<script setup>
-defineProps(['pilot'])
 import axios from 'axios'
 
+defineProps(['pilot'])
 const emit = defineEmits(['pilotDelete'])
 
 function buttonClick(id) {
@@ -10,7 +10,7 @@ function buttonClick(id) {
     .then(() => {
       emit('pilotDelete', true)
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error)
       emit('pilotDelete', false)
     })
@@ -23,7 +23,5 @@ function buttonClick(id) {
          variant="plain"
          @click="buttonClick(pilot.id)"
   >
-  </v-btn> <!--url-->
+  </v-btn>
 </template>
-
-<style scoped></style>

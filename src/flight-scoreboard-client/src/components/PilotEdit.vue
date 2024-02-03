@@ -1,11 +1,12 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
 import axios from 'axios'
+import { onMounted, ref } from 'vue'
+
+const props = defineProps(['pilot'])
+const emit = defineEmits(['pilotEdit'])
 
 const dialog = ref(false)
-const emit = defineEmits(['pilotEdit'])
 const airlines = ref([])
-const props = defineProps(['pilot'])
 
 const newPilot = ref({
   name: props.pilot.name,
@@ -15,22 +16,22 @@ const newPilot = ref({
   id: props.pilot.id
 })
 
-function pilotEdit() {
+function buttonSaveClick() {
   axios
     .put('https://localhost:7294/Pilot', newPilot.value)
-    .then((res) => {
-      console.log(res.data)
-      emit('pilotEdit', res.data)
+    .then(() => {
+      emit('pilotEdit', true)
     })
-    .catch(function(error) {
+    .catch(error => {
       console.log(error)
+      emit('pilotEdit', false)
     })
+    .finally(() => dialog.value = false)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Airline').then((response) =>
-    airlines.value = response.data.map(x => ({ value: x.id, title: x.name })
-    ))
+  axios.get('https://localhost:7294/Airline')
+    .then(res => airlines.value = res.data.map(x => ({ value: x.id, title: x.name })))
 })
 
 </script>
@@ -56,7 +57,6 @@ onMounted(() => {
       </v-card-title>
       <v-card-text>
         <v-container>
-
           <v-row>
             <v-col cols="12">
               <v-text-field
@@ -108,7 +108,7 @@ onMounted(() => {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="pilotEdit(); dialog = false"
+          @click="buttonSaveClick()"
         >
           Save
         </v-btn>

@@ -7,24 +7,32 @@ import PilotEdit from '@/components/PilotEdit.vue'
 
 const pilots = ref([])
 
-function remove(index) {
-  pilots.value.splice(index, 1)
-}
-
-function add(id) {
+function create(id) {
   axios.get(`https://localhost:7294/Pilot/${id}`)
-    .then((response) => (pilots.value.push(response.data)))
+    .then(res => pilots.value.push(res.data))
+    .catch(error => {
+      console.log(error)
+    })
 }
 
 function edit(isUpdated, id, index) {
   if (isUpdated) {
     axios.get(`https://localhost:7294/Pilot/${id}`)
-      .then((response) => (pilots.value[index] = response.data))
+      .then(res => pilots.value[index] = res.data)
+      .catch(error => {
+        console.log(error)
+      })
+  }
+}
+
+function remove(isDeleted, index) {
+  if (isDeleted) {
+    pilots.value.splice(index, 1)
   }
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Pilot').then((response) => (pilots.value = response.data))
+  axios.get('https://localhost:7294/Pilot').then(res => pilots.value = res.data)
 })
 </script>
 
@@ -36,14 +44,11 @@ onMounted(() => {
       :key="pilot.id"
     >
       {{ pilot.surName }} {{ pilot.name }} {{ pilot.age }} {{ pilot.airlineName }}
-      <PilotDelete :pilot="pilot" @pilot-delete="(id) => remove(index)" />
-      <PilotEdit :pilot="pilot" @pilot-edit="(isUpdated)=> edit(isUpdated,pilot.id,index)" />
+      <PilotDelete :pilot="pilot" @pilot-delete="(isDeleted) => remove(isDeleted, index)" />
+      <PilotEdit :pilot="pilot" @pilot-edit="(isUpdated)=> edit(isUpdated, pilot.id, index)" />
     </v-list-item>
   </v-list>
   <div>
-    <PilotCreate @pilot-add="(pilotId) => add(pilotId)" />
+    <PilotCreate @pilot-create="(pilotId) => create(pilotId)" />
   </div>
 </template>
-
-<style scoped>
-</style>

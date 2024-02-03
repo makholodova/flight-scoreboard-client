@@ -1,11 +1,12 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
 import axios from 'axios'
+import { onMounted, ref } from 'vue'
 
-const newPilot = ref({ name: '', surName: '', age: null, id: 0, airlineId: null })
-const allAirlines = ref([])
+const emit = defineEmits(['pilotCreate'])
+
 const dialog = ref(false)
-const emit = defineEmits(['pilotAdd'])
+const allAirlines = ref([])
+const newPilot = ref({ name: '', surName: '', age: null, id: 0, airlineId: null })
 
 function resetState() {
   newPilot.value.name = ''
@@ -14,27 +15,26 @@ function resetState() {
   newPilot.value.airlineId = null
 }
 
-function pilotAdd() {
+function buttonCreateClick() {
   axios
     .post('https://localhost:7294/Pilot', newPilot.value)
-    .then((res) => {
+    .then(res => {
       resetState()
-      emit('pilotAdd', res.data)
+      emit('pilotCreate', res.data)
     })
-    .catch(function(error) {
+    .catch(error => {
       console.log(error)
     })
+    .finally(() => dialog.value = false)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Airline').then((response) =>
-    allAirlines.value = response.data.map(x => ({ value: x.id, title: x.name })
-    ))
+  axios.get('https://localhost:7294/Airline')
+    .then(res => allAirlines.value = res.data.map(x => ({ value: x.id, title: x.name })))
 })
 </script>
 
 <template>
-
   <v-dialog
     v-model="dialog"
     persistent
@@ -106,9 +106,9 @@ onMounted(() => {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="pilotAdd(); dialog = false"
+          @click="buttonCreateClick()"
         >
-          Save
+          Create
         </v-btn>
       </v-card-actions>
     </v-card>
