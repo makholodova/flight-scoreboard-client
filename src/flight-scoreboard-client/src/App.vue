@@ -5,9 +5,9 @@ import { RouterView } from 'vue-router'
 <template>
   <v-app>
 
-    <v-navigation-drawer v-model="sidebar" class="d-flex d-sm-none" app>
+    <v-navigation-drawer v-model="sidebar" app class="d-flex d-sm-none">
       <v-list>
-                <v-list-item v-for="item in menuItems"
+        <v-list-item v-for="item in menuItems"
                      :key="item.title"
                      :prepend-icon=item.icon
                      :title=item.title

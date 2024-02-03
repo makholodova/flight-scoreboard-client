@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -30,26 +30,26 @@ import { RouterLink, RouterView } from 'vue-router'
 
       <v-toolbar-title>
 
-<!--        <a class="d-inline-block ms-4 me-2" href="/">
-          <div aria-label="Vuetify Logo" class="v-responsive v-img shrink" role="img" style="width: 148px;">
-            <div class="v-responsive__sizer" style="padding-bottom: 23.5772%;"></div>
-            <img alt="Vuetify Logo" class="v-img__img v-img__img&#45;&#45;contain"
-                 src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg" style="">&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;</div>
-        </a>-->
+        <!--        <a class="d-inline-block ms-4 me-2" href="/">
+                  <div aria-label="Vuetify Logo" class="v-responsive v-img shrink" role="img" style="width: 148px;">
+                    <div class="v-responsive__sizer" style="padding-bottom: 23.5772%;"></div>
+                    <img alt="Vuetify Logo" class="v-img__img v-img__img&#45;&#45;contain"
+                         src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg" style="">&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;</div>
+                </a>-->
 
-dfgdhfgh
-<!--        <router-link style="cursor: pointer" tag="span" to="/">
-&lt;!&ndash;          <v-img
-            :width="170"
-            aspect-ratio="16/9"
-            cover
-            src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-          ></v-img>&ndash;&gt;
-          {{ appTitle }}
-        </router-link>-->
+        dfgdhfgh
+        <!--        <router-link style="cursor: pointer" tag="span" to="/">
+        &lt;!&ndash;          <v-img
+                    :width="170"
+                    aspect-ratio="16/9"
+                    cover
+                    src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+                  ></v-img>&ndash;&gt;
+                  {{ appTitle }}
+                </router-link>-->
       </v-toolbar-title>
 
-<!--      <v-spacer></v-spacer>-->
+      <!--      <v-spacer></v-spacer>-->
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
           v-for="item in menuItems"

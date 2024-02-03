@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import CityView from '@/views/CityView.vue'
 import AppView from '@/views/AppView.vue'
 
 const router = createRouter({
@@ -10,7 +9,7 @@ const router = createRouter({
       name: 'home',
       component: AppView
     },
-    
+
     {
       path: '/city',
       name: 'city',
@@ -26,7 +25,7 @@ const router = createRouter({
       name: 'pilot',
       component: () => import('../views/PilotView.vue')
     }
-    
+
   ]
 })
 
