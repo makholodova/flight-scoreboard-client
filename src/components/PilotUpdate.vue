@@ -1,9 +1,9 @@
 ﻿<script setup>
-import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import { getAirlines, updatePilot } from '@/plugins/api.js'
 
 const props = defineProps(['pilot'])
-const emit = defineEmits(['pilotEdit'])
+const emit = defineEmits(['pilotUpdated'])
 
 const dialog = ref(false)
 const airlines = ref([])
@@ -17,20 +17,15 @@ const newPilot = ref({
 })
 
 function buttonSaveClick() {
-  axios
-    .put('https://localhost:7294/Pilot', newPilot.value)
+  updatePilot(newPilot.value)
     .then(() => {
-      emit('pilotEdit', true)
-    })
-    .catch(error => {
-      console.log(error)
-      emit('pilotEdit', false)
+      emit('pilotUpdated')
     })
     .finally(() => dialog.value = false)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Airline')
+  getAirlines()
     .then(res => airlines.value = res.data.map(x => ({ value: x.id, title: x.name })))
 })
 

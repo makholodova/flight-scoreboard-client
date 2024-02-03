@@ -1,18 +1,13 @@
 ﻿<script setup>
-import axios from 'axios'
+import { deletePilot } from '@/plugins/api.js'
 
 defineProps(['pilot'])
-const emit = defineEmits(['pilotDelete'])
+const emit = defineEmits(['pilotDeleted'])
 
 function buttonClick(id) {
-  axios
-    .delete(`https://localhost:7294/Pilot/${id}`)
+  deletePilot(id)
     .then(() => {
-      emit('pilotDelete', true)
-    })
-    .catch(error => {
-      console.log(error)
-      emit('pilotDelete', false)
+      emit('pilotDeleted')
     })
 }
 </script>

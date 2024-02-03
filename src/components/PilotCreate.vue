@@ -1,8 +1,10 @@
 ﻿<script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import { createPilot, getAirlines } from '@/plugins/api.js'
 
-const emit = defineEmits(['pilotCreate'])
+const emit = defineEmits(['pilotCreated'])
+
+//const state = reactive({dialog:false, allAirlines:[], newPilot:{}})
 
 const dialog = ref(false)
 const allAirlines = ref([])
@@ -16,20 +18,18 @@ function resetState() {
 }
 
 function buttonCreateClick() {
-  axios
-    .post('https://localhost:7294/Pilot', newPilot.value)
+  createPilot(newPilot.value)
     .then(res => {
+      emit('pilotCreated', res.data)
+    })
+    .finally(() => {
       resetState()
-      emit('pilotCreate', res.data)
+      return dialog.value = false
     })
-    .catch(error => {
-      console.log(error)
-    })
-    .finally(() => dialog.value = false)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Airline')
+  getAirlines()
     .then(res => allAirlines.value = res.data.map(x => ({ value: x.id, title: x.name })))
 })
 </script>
