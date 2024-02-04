@@ -17,8 +17,8 @@ function buttonCancelClick() {
   state.newPilot = { ...props.pilot }
 }
 
-function handleDialogUpdate(isOpening) {
-  if (isOpening && state.airlines.length === 0) {
+function buttonOpenDialog() {
+  if (state.airlines.length === 0) {
     getAirlines()
       .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
   }
@@ -30,7 +30,6 @@ function handleDialogUpdate(isOpening) {
     v-model="state.dialog"
     persistent
     width="512"
-    @update:modelValue="handleDialogUpdate"
   >
     <template v-slot:activator="{ props }">
       <v-btn color="green"
@@ -38,6 +37,7 @@ function handleDialogUpdate(isOpening) {
              size="x-small"
              v-bind="props"
              variant="plain"
+             @click="buttonOpenDialog"
       >
       </v-btn>
     </template>

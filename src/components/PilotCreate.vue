@@ -16,8 +16,8 @@ function buttonCancelClick() {
   state.newPilot = {}
 }
 
-function handleDialogUpdate(isOpening) {
-  if (isOpening && state.airlines.length === 0) {
+function buttonOpenDialog() {
+  if (state.airlines.length === 0) {
     getAirlines()
       .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
   }
@@ -29,13 +29,13 @@ function handleDialogUpdate(isOpening) {
     v-model="state.dialog"
     persistent
     width="512"
-    @update:modelValue="handleDialogUpdate"
   >
     <template v-slot:activator="{ props }">
       <v-btn
         height="36"
         v-bind="props"
         variant="tonal"
+        @click="buttonOpenDialog"
       >
         Create pilot
       </v-btn>
