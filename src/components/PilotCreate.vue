@@ -1,9 +1,12 @@
 ﻿<script setup>
 import { reactive } from 'vue'
-import { createPilot, getAirlines } from '@/plugins/api.js'
+import { createPilot } from '@/plugins/api.js'
+import { useAirlinesStore } from '@/store/useAirlinesStore.js'
 
 const emit = defineEmits(['pilotCreated'])
-const state = reactive({ dialog: false, airlines: [], newPilot: {} })
+const state = reactive({ dialog: false, newPilot: {} })
+
+const airlinesStore = useAirlinesStore()
 
 function buttonCreateClick() {
   createPilot(state.newPilot)
@@ -17,10 +20,7 @@ function buttonCancelClick() {
 }
 
 function buttonOpenDialog() {
-  if (state.airlines.length === 0) {
-    getAirlines()
-      .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
-  }
+  airlinesStore.load()
 }
 </script>
 
@@ -75,7 +75,7 @@ function buttonOpenDialog() {
             <v-col cols="6">
               <v-autocomplete
                 v-model="state.newPilot.airlineId"
-                :items="state.airlines"
+                :items="airlinesStore.airlinesForAutocomplete"
                 label="Airline"
                 placeholder="Select..."
                 required
