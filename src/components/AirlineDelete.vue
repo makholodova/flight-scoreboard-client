@@ -1,31 +1,19 @@
 ﻿<script setup>
-defineProps(['airline']) //url
+import { deleteAirline } from '@/plugins/api.js'
 
-import axios from 'axios'
+defineProps(['airline'])
+const emit = defineEmits(['airlineDeleted'])
 
-const emit = defineEmits(['airlineDelete']) //onDelete
-
-function buttonClick(id) { //url
-  axios
-    .delete(`https://localhost:7294/Airline/${id}`)
-    .then(() => {
-      emit('airlineDelete', id) //url or nothing
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+function buttonClick(id) {
+  deleteAirline(id).then(() => emit('airlineDeleted'))
 }
 </script>
 
 <template>
-
   <v-btn icon="mdi-bucket"
          size="x-small"
          variant="plain"
          @click="buttonClick(airline.id)"
   >
-  </v-btn> <!--url-->
-
+  </v-btn>
 </template>
-
-<style scoped></style>

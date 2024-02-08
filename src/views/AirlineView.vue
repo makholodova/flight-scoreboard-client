@@ -1,44 +1,59 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
+import { onMounted, reactive } from 'vue'
+import { getAirline, getAirlines } from '@/plugins/api.js'
 import AirlineDelete from '@/components/AirlineDelete.vue'
-import AirlineEdit from '@/components/AirlineEdit.vue'
 import AirlineCreate from '@/components/AirlineCreate.vue'
+import AirlineUpdate from '@/components/AirlineUpdate.vue'
 
-const airlines = ref([])
 
-function remove(index) {
-  airlines.value.splice(index, 1)
+const state = reactive({
+  airlines: [],
+  headers: [
+    { title: 'Airline name', key: 'name', align: 'start' },
+    { title: 'Actions', key: 'actions', sortable: false, align: 'end' }
+  ]
+})
+
+function create(id) {
+  getAirline(id).then(res => state.airlines.push(res.data))
 }
 
-function add(airline) {
-  airlines.value.push(airline)
+function update(id) {
+  let index = state.airlines.findIndex((x) => x.id === id)
+  getAirline(id).then(res => state.airlines[index] = res.data)
 }
 
-function edit(airline, index) {
-
-  airlines.value[index] = airline
+function remove(id) {
+  let index = state.airlines.findIndex((x) => x.id === id)
+  state.airlines.splice(index, 1)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/Airline').then((response) => (airlines.value = response.data))
+  getAirlines().then(res => state.airlines = res.data)
 })
 
 </script>
 
 <template>
-  <v-list>
-    <v-list-item-title> Авиакомпании:</v-list-item-title>
-    <v-list-item
-      v-for="(airline, index) in airlines"
-      :key="airline.id"
-    >
-      {{ airline.name }}
-      <AirlineDelete :airline="airline" @airline-delete="(id) => remove(index)" />
-      <AirlineEdit :airline="airline" @airline-edit="(airline)=> edit(airline,index)" />
-    </v-list-item>
-  </v-list>
-  <div>
-    <AirlineCreate @airline-add="(airline) => add(airline)" />
-  </div>
+  <v-data-table
+    :headers="state.headers"
+    :items="state.airlines"
+    :sort-by="[{ key: 'name', order: 'asc' }]"
+    item-key="id"
+  >
+    <template v-slot:top>
+      <v-toolbar
+        color="white"
+        flat
+      >
+        <v-toolbar-title>Airlines</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <AirlineCreate @airline-created="(airlineId) => create(airlineId)" />
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <AirlineUpdate :airline="item" @airline-updated="()=> update(item.id)" />
+      <AirlineDelete :airline="item" @airline-deleted="() =>remove(item.id)" />
+    </template>
+  </v-data-table>
 </template>

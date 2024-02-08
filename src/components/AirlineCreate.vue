@@ -1,35 +1,26 @@
 ﻿<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { reactive } from 'vue'
+import { createAirline } from '@/plugins/api.js'
 
-const newAirline = ref({ name: '', id: 0 })
-const dialog = ref(false)
-const emit = defineEmits(['airlineAdd'])
+const emit = defineEmits(['airlineCreated'])
+const state = reactive({ dialog: false, newAirline: {} })
 
-function resetState() {
-  newAirline.value.name = ''
+function buttonCreateClick() {
+  createAirline(state.newAirline)
+    .then(res => emit('airlineCreated', res.data))
+    .finally(() => buttonCancelClick())
 }
 
-function airlineAdd() {
-  let obj = { name: newAirline.value.name }
-  axios
-    .post('https://localhost:7294/Airline', newAirline.value)
-    .then((res) => {
-      resetState()
-      obj.id = res.data
-      emit('airlineAdd', obj)
-    })
-    .catch(function(error) {
-      console.log(error)
-    })
+function buttonCancelClick() {
+  state.dialog = false
+  state.newAirline = {}
 }
 
 </script>
 
 <template>
-
   <v-dialog
-    v-model="dialog"
+    v-model="state.dialog"
     persistent
     width="512"
   >
@@ -41,19 +32,17 @@ function airlineAdd() {
       >
         Create airline
       </v-btn>
-
     </template>
-
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите название авиалинии</span>
+        <span class="text-h5">New airline</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newAirline.name"
+                v-model="state.newAirline.name"
                 label="New airline*"
                 required
               ></v-text-field>
@@ -67,16 +56,16 @@ function airlineAdd() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="dialog = false"
+          @click="buttonCancelClick()"
         >
-          Close
+          Cancel
         </v-btn>
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="airlineAdd(); dialog = false"
+          @click="buttonCreateClick()"
         >
-          Save
+          Create
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -84,5 +73,3 @@ function airlineAdd() {
 
 </template>
 
-
-<style scoped></style>
