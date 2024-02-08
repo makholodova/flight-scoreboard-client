@@ -1,34 +1,25 @@
 ﻿<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { reactive } from 'vue'
+import { createCity } from '@/plugins/api.js'
 
-const newCity = ref({ name: '', id: 0 })
-const dialog = ref(false)
-const emit = defineEmits(['cityAdd'])
+const emit = defineEmits(['cityCreated'])
+const state = reactive({ dialog: false, newCity: {} })
 
-function resetState() {
-  newCity.value.name = ''
+function buttonCreateClick() {
+  createCity(state.newCity)
+    .then(res => emit('cityCreated', res.data))
+    .finally(() => buttonCancelClick())
 }
 
-function cityAdd() {
-  let obj = { name: newCity.value.name }
-  axios
-    .post('https://localhost:7294/City', newCity.value)
-    .then((res) => {
-      resetState()
-      obj.id = res.data
-      emit('cityAdd', obj)
-    })
-    .catch(function(error) {
-      console.log(error)
-    })
+function buttonCancelClick() {
+  state.dialog = false
+  state.newCity = {}
 }
+
 </script>
-
 <template>
-
   <v-dialog
-    v-model="dialog"
+    v-model="state.dialog"
     persistent
     width="512"
   >
@@ -37,22 +28,20 @@ function cityAdd() {
         height="36"
         v-bind="props"
         variant="tonal"
-
       >
         Create city
       </v-btn>
     </template>
-
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите название города</span>
+        <span class="text-h5">New city</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newCity.name"
+                v-model="state.newCity.name"
                 label="New city*"
                 required
               ></v-text-field>
@@ -66,20 +55,19 @@ function cityAdd() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="dialog = false"
+          @click="buttonCancelClick()"
         >
-          Close
+          Cancel
         </v-btn>
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="cityAdd(); dialog = false"
+          @click="buttonCreateClick()"
         >
-          Save
+          Create
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-
 </template>
 

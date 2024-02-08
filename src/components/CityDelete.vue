@@ -1,28 +1,19 @@
 ﻿<script setup>
-defineProps(['city'])
-import axios from 'axios'
+import { deleteCity } from '@/plugins/api.js'
 
-const emit = defineEmits(['cityDelete'])
+defineProps(['city'])
+const emit = defineEmits(['cityDeleted'])
 
 function buttonClick(id) {
-  axios
-    .delete(`https://localhost:7294/City/${id}`)
-    .then(() => {
-      emit('cityDelete', id)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  deleteCity(id).then(() => emit('cityDeleted'))
 }
 </script>
 
 <template>
-  <v-btn
-    icon="mdi-bucket"
-    size="x-small"
-    variant="plain"
-    @click="buttonClick(city.id)"
+  <v-btn icon="mdi-bucket"
+         size="x-small"
+         variant="plain"
+         @click="buttonClick(city.id)"
   >
   </v-btn>
 </template>
-

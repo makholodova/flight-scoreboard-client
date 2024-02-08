@@ -1,45 +1,31 @@
 ﻿<script setup>
-import { ref } from 'vue'
 
-const dialog = ref(false)
-const emit = defineEmits(['cityEdit'])
+import { reactive } from 'vue'
+import { updateCity } from '@/plugins/api.js'
+
 const props = defineProps(['city'])
-const newCity = ref({ name: props.city.name, id: props.city.id })
+const emit = defineEmits(['cityUpdated'])
+const state = reactive({ dialog: false, newCity: { ...props.city } })
 
-/*const newCity2 = reactive({ name: props.city.name, id: props.city.id })*/
-
-
-function cityEdit() {
-
-  let obj = { name: newCity.value.name, id: newCity.value.id }
-  console.log(newCity.value)
-  /*  console.log(newCity2)*/
-  emit('cityEdit', obj)
-
-  /*axios
-    .post('https://localhost:7294/City', newCity.value) 
-    .then((res) => {
-      newCity.value.name = ''
-      obj.id = res.data
-      emit('cityEdit', obj)
-    })
-    .catch(function(error) {
-      console.log(error)
-    })*/
+function buttonSaveClick() {
+  updateCity(state.newCity)
+    .then(() => emit('cityUpdated'))
+    .finally(() => state.dialog = false)
 }
 
+function buttonCancelClick() {
+  state.dialog = false
+  state.newCity = { ...props.city }
+}
 
 </script>
-
 <template>
-  <!--  <v-row justify="center">-->
   <v-dialog
-    v-model="dialog"
+    v-model="state.dialog"
     persistent
     width="512"
   >
     <template v-slot:activator="{ props }">
-
       <v-btn color="green"
              icon="mdi-pencil"
              size="x-small"
@@ -47,19 +33,17 @@ function cityEdit() {
              variant="plain"
       >
       </v-btn>
-
     </template>
-
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите название города</span>
+        <span class="text-h5">Edit city</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="newCity.name"
+                v-model="state.newCity.name"
                 label="New city*"
                 required
               ></v-text-field>
@@ -73,14 +57,14 @@ function cityEdit() {
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="dialog = false"
+          @click="buttonCancelClick()"
         >
-          Close
+          Cancel
         </v-btn>
         <v-btn
           color="blue-darken-1"
           variant="text"
-          @click="cityEdit(); dialog = false"
+          @click="buttonSaveClick()"
         >
           Save
         </v-btn>

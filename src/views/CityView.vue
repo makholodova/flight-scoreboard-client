@@ -1,43 +1,57 @@
 ﻿<script setup>
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
-import CityDelete from '@/components/CityDelete.vue'
-import CityEdit from '@/components/CityEdit.vue'
+import { onMounted, reactive } from 'vue'
+import { getCities, getCity } from '@/plugins/api.js'
 import CityCreate from '@/components/CityCreate.vue'
+import CityUpdate from '@/components/CityUpdate.vue'
+import CityDelete from '@/components/CityDelete.vue'
 
-const cities = ref([])
+const state = reactive({
+  cities: [],
+  headers: [
+    { title: 'City name', key: 'name', align: 'start' },
+    { title: 'Actions', key: 'actions', sortable: false, align: 'end' }
+  ]
+})
 
-function remove(index) {
-  cities.value.splice(index, 1)
+function create(id) {
+  getCity(id).then(res => state.cities.push(res.data))
 }
 
-function add(city) {
-  cities.value.push(city)
+function update(id) {
+  let index = state.cities.findIndex((x) => x.id === id)
+  getCity(id).then(res => state.cities[index] = res.data)
 }
 
-function edit(city, index) {
-
-  cities.value[index] = city
+function remove(id) {
+  let index = state.cities.findIndex((x) => x.id === id)
+  state.cities.splice(index, 1)
 }
 
 onMounted(() => {
-  axios.get('https://localhost:7294/City').then((response) => (cities.value = response.data))
+  getCities().then(res => state.cities = res.data)
 })
 </script>
 
 <template>
-  <v-list>
-    <v-list-item-title> Города:</v-list-item-title>
-    <v-list-item
-      v-for="(city, index) in cities"
-      :key="city.id"
-    >
-      {{ city.name }}
-      <CityDelete :city="city" @city-delete="(id) => remove(index)" />
-      <CityEdit :city="city" @city-edit="(city)=> edit(city,index)" />
-    </v-list-item>
-  </v-list>
-  <div>
-    <CityCreate @city-add="(city) => add(city)" />
-  </div>
+  <v-data-table
+    :headers="state.headers"
+    :items="state.cities"
+    :sort-by="[{ key: 'name', order: 'asc' }]"
+    item-key="id"
+  >
+    <template v-slot:top>
+      <v-toolbar
+        color="white"
+        flat
+      >
+        <v-toolbar-title>Cities</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <CityCreate @city-created="(cityId) => create(cityId)" />
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <CityUpdate :city="item" @city-updated="()=> update(item.id)" />
+      <CityDelete :city="item" @city-deleted="() =>remove(item.id)" />
+    </template>
+  </v-data-table>
 </template>
