@@ -20,9 +20,7 @@ import { RouterView } from 'vue-router'
       density="compact">
       <v-app-bar-nav-icon class="d-flex d-sm-none" @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       <v-toolbar-title> Flight Scoreboard</v-toolbar-title>
-
-      <!--      <v-spacer></v-spacer>-->
-
+      <v-spacer></v-spacer>
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn
           v-for="item in menuItems"
@@ -52,7 +50,8 @@ export default {
       menuItems: [
         { title: 'City', path: '/city', icon: 'mdi-city' },
         { title: 'Airline', path: '/airline' },
-        { title: 'Pilot', path: '/pilot' }
+        { title: 'Pilot', path: '/pilot' },
+        { title: 'Airplane', path: '/airplane' }
       ]
     }
   }
