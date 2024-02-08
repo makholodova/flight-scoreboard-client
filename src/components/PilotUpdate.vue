@@ -1,13 +1,10 @@
 ﻿<script setup>
 import { reactive } from 'vue'
-import { updatePilot } from '@/plugins/api.js'
-import { useAirlinesStore } from '@/store/useAirlinesStore.js'
+import { getAirlines, updatePilot } from '@/plugins/api.js'
 
 const props = defineProps(['pilot'])
 const emit = defineEmits(['pilotUpdated'])
-const state = reactive({ dialog: false, newPilot: { ...props.pilot } })
-
-const airlinesStore = useAirlinesStore()
+const state = reactive({ dialog: false, airlines: [], newPilot: { ...props.pilot } })
 
 function buttonSaveClick() {
   updatePilot(state.newPilot)
@@ -17,11 +14,16 @@ function buttonSaveClick() {
 
 function buttonCancelClick() {
   state.dialog = false
-  state.newPilot = { ...props.pilot }
+  //this.$nextTick(() => {
+    state.newPilot = { ...props.pilot }
+  //})
 }
 
 function buttonOpenDialog() {
-  airlinesStore.load()
+  if (state.airlines.length === 0) {
+    getAirlines()
+      .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
+  }
 }
 </script>
 
@@ -32,18 +34,26 @@ function buttonOpenDialog() {
     width="512"
   >
     <template v-slot:activator="{ props }">
-      <v-btn color="green"
-             icon="mdi-pencil"
-             size="x-small"
-             v-bind="props"
-             variant="plain"
-             @click="buttonOpenDialog"
+      <v-icon
+        class="me-2"
+        size="small"
+        v-bind="props"
+        @click="buttonOpenDialog"
       >
-      </v-btn>
+        mdi-pencil
+      </v-icon>
+      <!--      <v-btn color="green"
+                   icon="mdi-pencil"
+                   size="x-small"
+                   v-bind="props"
+                   variant="plain"
+                   @click="buttonOpenDialog"
+            >
+            </v-btn>-->
     </template>
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите данные пилота</span>
+        <span class="text-h5">Edit pilot</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -51,7 +61,7 @@ function buttonOpenDialog() {
             <v-col cols="12">
               <v-text-field
                 v-model="state.newPilot.surName"
-                label="Surname"
+                label="Surname*"
                 required
               ></v-text-field>
             </v-col>
@@ -76,7 +86,7 @@ function buttonOpenDialog() {
             <v-col cols="6">
               <v-autocomplete
                 v-model="state.newPilot.airlineId"
-                :items="airlinesStore.airlinesForAutocomplete"
+                :items="state.airlines"
                 label="Airline"
                 placeholder="Select..."
                 required

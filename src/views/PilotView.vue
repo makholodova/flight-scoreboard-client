@@ -5,17 +5,28 @@ import PilotCreate from '@/components/PilotCreate.vue'
 import PilotUpdate from '@/components/PilotUpdate.vue'
 import PilotDelete from '@/components/PilotDelete.vue'
 
-const state = reactive({ pilots: [] })
+const state = reactive({
+  pilots: [],
+  headers: [
+    { title: 'Surname', key: 'surName', align: 'start' },
+    { title: 'Name', key: 'name' },
+    { title: 'Age', key: 'age' },
+    { title: 'Airline', key: 'airlineName' },
+    { title: 'Actions', key: 'actions', sortable: false, align: 'end' }
+  ]
+})
 
 function create(id) {
   getPilot(id).then(res => state.pilots.push(res.data))
 }
 
-function update(id, index) {
+function update(id) {
+  let index = state.pilots.findIndex((x) => x.id === id)
   getPilot(id).then(res => state.pilots[index] = res.data)
 }
 
-function remove(index) {
+function remove(id) {
+  let index = state.pilots.findIndex((x) => x.id === id)
   state.pilots.splice(index, 1)
 }
 
@@ -25,18 +36,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-list>
-    <v-list-item-title>Список пилотов:</v-list-item-title>
-    <v-list-item
-      v-for="(pilot, index) in state.pilots"
-      :key="pilot.id"
-    >
-      {{ pilot.surName }} {{ pilot.name }} {{ pilot.age }} {{ pilot.airlineName }}
-      <PilotUpdate :pilot="pilot" @pilot-updated="()=> update(pilot.id, index)" />
-      <PilotDelete :pilot="pilot" @pilot-deleted="() => remove(index)" />
-    </v-list-item>
-  </v-list>
-  <div>
-    <PilotCreate @pilot-created="(pilotId) => create(pilotId)" />
-  </div>
+  <v-data-table
+    :headers="state.headers"
+    :items="state.pilots"
+    :sort-by="[{ key: 'surName', order: 'asc' }]"
+    item-key="id"
+  >
+    <template v-slot:top>
+      <v-toolbar
+        color="white"
+        flat
+      >
+        <v-toolbar-title>Pilots</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <PilotCreate @pilot-created="(pilotId) => create(pilotId)" />
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <PilotUpdate :pilot="item" @pilot-updated="()=> update(item.id)" />
+      <PilotDelete :pilot="item" @pilot-deleted="() =>remove(item.id)" />
+    </template>
+  </v-data-table>
 </template>

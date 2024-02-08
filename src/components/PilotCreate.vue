@@ -1,12 +1,9 @@
 ﻿<script setup>
 import { reactive } from 'vue'
-import { createPilot } from '@/plugins/api.js'
-import { useAirlinesStore } from '@/store/useAirlinesStore.js'
+import { createPilot, getAirlines } from '@/plugins/api.js'
 
 const emit = defineEmits(['pilotCreated'])
-const state = reactive({ dialog: false, newPilot: {} })
-
-const airlinesStore = useAirlinesStore()
+const state = reactive({ dialog: false, airlines: [], newPilot: {} })
 
 function buttonCreateClick() {
   createPilot(state.newPilot)
@@ -20,8 +17,12 @@ function buttonCancelClick() {
 }
 
 function buttonOpenDialog() {
-  airlinesStore.load()
+  if (state.airlines.length === 0) {
+    getAirlines()
+      .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
+  }
 }
+
 </script>
 
 <template>
@@ -32,7 +33,7 @@ function buttonOpenDialog() {
   >
     <template v-slot:activator="{ props }">
       <v-btn
-        height="36"
+        class="mb-2"
         v-bind="props"
         variant="tonal"
         @click="buttonOpenDialog"
@@ -42,7 +43,7 @@ function buttonOpenDialog() {
     </template>
     <v-card>
       <v-card-title>
-        <span class="text-h5">Введите данные пилота</span>
+        <span class="text-h5">New pilot</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -75,7 +76,7 @@ function buttonOpenDialog() {
             <v-col cols="6">
               <v-autocomplete
                 v-model="state.newPilot.airlineId"
-                :items="airlinesStore.airlinesForAutocomplete"
+                :items="state.airlines"
                 label="Airline"
                 placeholder="Select..."
                 required
