@@ -41,7 +41,7 @@ export default {
       sidebar: false,
       menuItems: [
         { title: 'City', path: '/city', icon: 'mdi-city' },
-        { title: 'Airline', path: '/airline' },
+        { title: 'Airline', path: '/airline', icon: 'mdi-badge-account-horizontal' },
         { title: 'Pilot', path: '/pilot', icon: 'mdi-account' },
         { title: 'Airplane', path: '/airplane', icon: 'mdi-airplane' }
       ]

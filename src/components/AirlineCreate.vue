@@ -7,31 +7,22 @@ const state = reactive({ dialog: false, newAirline: {} })
 
 function buttonCreateClick() {
   createAirline(state.newAirline)
-    .then(res => emit('airlineCreated', res.data))
+    .then((res) => emit('airlineCreated', res.data))
     .finally(() => buttonCancelClick())
 }
 
 function buttonCancelClick() {
   state.dialog = false
-  state.newAirline = {}
+  this.$nextTick(() => {
+    state.newAirline = {}
+  })
 }
-
 </script>
 
 <template>
-  <v-dialog
-    v-model="state.dialog"
-    persistent
-    width="512"
-  >
+  <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-btn
-        height="36"
-        v-bind="props"
-        variant="tonal"
-      >
-        Create airline
-      </v-btn>
+      <v-btn height="36" v-bind="props" variant="tonal"> Create airline</v-btn>
     </template>
     <v-card>
       <v-card-title>
@@ -53,23 +44,9 @@ function buttonCancelClick() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCancelClick()"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCreateClick()"
-        >
-          Create
-        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick()"> Cancel</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCreateClick()"> Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-
 </template>
-
