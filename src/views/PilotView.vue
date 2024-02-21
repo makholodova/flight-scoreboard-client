@@ -17,12 +17,12 @@ const state = reactive({
 })
 
 function create(id) {
-  getPilot(id).then(res => state.pilots.push(res.data))
+  getPilot(id).then((res) => state.pilots.push(res.data))
 }
 
 function update(id) {
   let index = state.pilots.findIndex((x) => x.id === id)
-  getPilot(id).then(res => state.pilots[index] = res.data)
+  getPilot(id).then((res) => (state.pilots[index] = res.data))
 }
 
 function remove(id) {
@@ -31,7 +31,7 @@ function remove(id) {
 }
 
 onMounted(() => {
-  getPilots().then(res => state.pilots = res.data)
+  getPilots().then((res) => (state.pilots = res.data))
 })
 </script>
 
@@ -43,18 +43,15 @@ onMounted(() => {
     item-key="id"
   >
     <template v-slot:top>
-      <v-toolbar
-        color="white"
-        flat
-      >
+      <v-toolbar color="white" flat>
         <v-toolbar-title>Pilots</v-toolbar-title>
         <v-spacer></v-spacer>
         <PilotCreate @pilot-created="(pilotId) => create(pilotId)" />
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <PilotUpdate :pilot="item" @pilot-updated="()=> update(item.id)" />
-      <PilotDelete :pilot="item" @pilot-deleted="() =>remove(item.id)" />
+      <PilotUpdate :pilot="item" @pilot-updated="() => update(item.id)" />
+      <PilotDelete :pilot="item" @pilot-deleted="() => remove(item.id)" />
     </template>
   </v-data-table>
 </template>

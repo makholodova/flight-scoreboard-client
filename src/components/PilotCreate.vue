@@ -7,37 +7,30 @@ const state = reactive({ dialog: false, airlines: [], newPilot: {} })
 
 function buttonCreateClick() {
   createPilot(state.newPilot)
-    .then(res => emit('pilotCreated', res.data))
+    .then((res) => emit('pilotCreated', res.data))
     .finally(() => buttonCancelClick())
 }
 
 function buttonCancelClick() {
   state.dialog = false
-  state.newPilot = {}
+  this.$nextTick(() => {
+    state.newPilot = {}
+  })
 }
 
 function buttonOpenDialog() {
   if (state.airlines.length === 0) {
-    getAirlines()
-      .then(res => state.airlines = res.data.map(x => ({ value: x.id, title: x.name })))
+    getAirlines().then(
+      (res) => (state.airlines = res.data.map((x) => ({ value: x.id, title: x.name })))
+    )
   }
 }
-
 </script>
 
 <template>
-  <v-dialog
-    v-model="state.dialog"
-    persistent
-    width="512"
-  >
+  <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-btn
-        class="mb-2"
-        v-bind="props"
-        variant="tonal"
-        @click="buttonOpenDialog"
-      >
+      <v-btn class="mb-2" v-bind="props" variant="tonal" @click="buttonOpenDialog">
         Create pilot
       </v-btn>
     </template>
@@ -58,26 +51,18 @@ function buttonOpenDialog() {
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model="state.newPilot.name"
-                label="Name*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="state.newPilot.name" label="Name*" required></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="6">
-              <v-text-field
-                v-model="state.newPilot.age"
-                label="Age*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="state.newPilot.age" label="Age*" required></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-autocomplete
                 v-model="state.newPilot.airlineId"
                 :items="state.airlines"
-                label="Airline"
+                label="Airline*"
                 placeholder="Select..."
                 required
               ></v-autocomplete>
@@ -88,23 +73,9 @@ function buttonOpenDialog() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCancelClick()"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCreateClick()"
-        >
-          Create
-        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick()"> Cancel</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCreateClick()"> Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
-
-
