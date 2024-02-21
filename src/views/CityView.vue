@@ -14,12 +14,12 @@ const state = reactive({
 })
 
 function create(id) {
-  getCity(id).then(res => state.cities.push(res.data))
+  getCity(id).then((res) => state.cities.push(res.data))
 }
 
 function update(id) {
   let index = state.cities.findIndex((x) => x.id === id)
-  getCity(id).then(res => state.cities[index] = res.data)
+  getCity(id).then((res) => (state.cities[index] = res.data))
 }
 
 function remove(id) {
@@ -28,7 +28,7 @@ function remove(id) {
 }
 
 onMounted(() => {
-  getCities().then(res => state.cities = res.data)
+  getCities().then((res) => (state.cities = res.data))
 })
 </script>
 
@@ -40,18 +40,15 @@ onMounted(() => {
     item-key="id"
   >
     <template v-slot:top>
-      <v-toolbar
-        color="white"
-        flat
-      >
+      <v-toolbar color="white" flat>
         <v-toolbar-title>Cities</v-toolbar-title>
         <v-spacer></v-spacer>
         <CityCreate @city-created="(cityId) => create(cityId)" />
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <CityUpdate :city="item" @city-updated="()=> update(item.id)" />
-      <CityDelete :city="item" @city-deleted="() =>remove(item.id)" />
+      <CityUpdate :city="item" @city-updated="() => update(item.id)" />
+      <CityDelete :city="item" @city-deleted="() => remove(item.id)" />
     </template>
   </v-data-table>
 </template>

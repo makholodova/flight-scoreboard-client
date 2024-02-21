@@ -1,5 +1,4 @@
 ﻿<script setup>
-
 import { reactive } from 'vue'
 import { updateCity } from '@/plugins/api.js'
 
@@ -10,29 +9,20 @@ const state = reactive({ dialog: false, newCity: { ...props.city } })
 function buttonSaveClick() {
   updateCity(state.newCity)
     .then(() => emit('cityUpdated'))
-    .finally(() => state.dialog = false)
+    .finally(() => (state.dialog = false))
 }
 
 function buttonCancelClick() {
   state.dialog = false
-  state.newCity = { ...props.city }
+  this.$nextTick(() => {
+    state.newCity = { ...props.city }
+  })
 }
-
 </script>
 <template>
-  <v-dialog
-    v-model="state.dialog"
-    persistent
-    width="512"
-  >
+  <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-btn color="green"
-             icon="mdi-pencil"
-             size="x-small"
-             v-bind="props"
-             variant="plain"
-      >
-      </v-btn>
+      <v-btn color="green" icon="mdi-pencil" size="x-small" v-bind="props" variant="plain"></v-btn>
     </template>
     <v-card>
       <v-card-title>
@@ -42,11 +32,7 @@ function buttonCancelClick() {
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model="state.newCity.name"
-                label="New city*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="state.newCity.name" label="New city*" required></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -54,22 +40,9 @@ function buttonCancelClick() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCancelClick()"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonSaveClick()"
-        >
-          Save
-        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick()"> Cancel</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonSaveClick()"> Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <!--  </v-row>-->
-</template>
+ </template>
