@@ -29,8 +29,12 @@ const router = createRouter({
       path: '/airplane',
       name: 'airplane',
       component: () => import('../views/AirplaneView.vue')
+    },
+    {
+      path: '/:airlineId/airplanes',
+      name: 'airlineAirplanes',
+      component: () => import('../views/AirlineAirplaneView.vue')
     }
-
   ]
 })
 

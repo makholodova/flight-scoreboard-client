@@ -13,6 +13,16 @@ export const createAirline = (newAirline) => axios.post('/airline', newAirline)
 export const updateAirline = (newAirline) => axios.put('/airline', newAirline)
 export const deleteAirline = (airlineId) => axios.delete(`/airline/${airlineId}`)
 
+export const getAirlineAirplanes = (airlineId) => axios.get(`/airline/${airlineId}/airplanes`)
+export const getAirlineAirplane = (airlineId, airplaneId) =>
+  axios.get(`/airline/${airlineId}/airplane/${airplaneId}`)
+export const createAirlineAirplane = (airlineId, newAirplane) =>
+  axios.post(`/airline/${airlineId}/airplane`, newAirplane)
+export const updateAirlineAirplane = (airlineId, newAirplane) =>
+  axios.put(`/airline/${airlineId}/airplane`, newAirplane)
+export const deleteAirlineAirplane = (airlineId, airplaneId) =>
+  axios.delete(`/airline/${airlineId}/airplane/${airplaneId}`)
+
 //pilot
 export const getPilot = (pilotId) => axios.get(`/pilot/${pilotId}`)
 export const getPilots = () => axios.get('/pilot')

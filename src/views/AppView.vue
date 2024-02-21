@@ -1,11 +1,5 @@
-﻿<script setup>
+﻿<script setup></script>
 
-</script>
+<template>Welcome to Flight Scoreboard</template>
 
-<template>
-  Welcome to Flight Scoreboard
-</template>
-
-<style scoped>
-
-</style>
+<style scoped></style>
