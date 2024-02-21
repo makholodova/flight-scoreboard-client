@@ -9,29 +9,20 @@ const state = reactive({ dialog: false, newAirplane: { ...props.airplane } })
 function buttonSaveClick() {
   updateAirplane(state.newAirplane)
     .then(() => emit('airplaneUpdated'))
-    .finally(() => state.dialog = false)
+    .finally(() => (state.dialog = false))
 }
 
 function buttonCancelClick() {
   state.dialog = false
-  state.newAirplane = { ...props.airplane }
+  this.$nextTick(() => {
+    state.newAirplane = { ...props.airplane }
+  })
 }
-
 </script>
 <template>
-  <v-dialog
-    v-model="state.dialog"
-    persistent
-    width="512"
-  >
+  <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-btn color="green"
-             icon="mdi-pencil"
-             size="x-small"
-             v-bind="props"
-             variant="plain"
-      >
-      </v-btn>
+      <v-btn color="green" icon="mdi-pencil" size="x-small" v-bind="props" variant="plain"></v-btn>
     </template>
     <v-card>
       <v-card-title>
@@ -53,22 +44,9 @@ function buttonCancelClick() {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonCancelClick()"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="blue-darken-1"
-          variant="text"
-          @click="buttonSaveClick()"
-        >
-          Save
-        </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick()"> Cancel</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonSaveClick()"> Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-
 </template>

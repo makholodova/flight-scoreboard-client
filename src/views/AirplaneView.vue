@@ -5,7 +5,6 @@ import AirplaneDelete from '@/components/AirplaneDelete.vue'
 import AirplaneCreate from '@/components/AirplaneCreate.vue'
 import AirplaneUpdate from '@/components/AirplaneUpdate.vue'
 
-
 const state = reactive({
   airplanes: [],
   headers: [
@@ -15,12 +14,12 @@ const state = reactive({
 })
 
 function create(id) {
-  getAirplane(id).then(res => state.airplanes.push(res.data))
+  getAirplane(id).then((res) => state.airplanes.push(res.data))
 }
 
 function update(id) {
   let index = state.airplanes.findIndex((x) => x.id === id)
-  getAirplane(id).then(res => state.airplanes[index] = res.data)
+  getAirplane(id).then((res) => (state.airplanes[index] = res.data))
 }
 
 function remove(id) {
@@ -29,9 +28,8 @@ function remove(id) {
 }
 
 onMounted(() => {
-  getAirplanes().then(res => state.airplanes = res.data)
+  getAirplanes().then((res) => (state.airplanes = res.data))
 })
-
 </script>
 
 <template>
@@ -42,18 +40,15 @@ onMounted(() => {
     item-key="id"
   >
     <template v-slot:top>
-      <v-toolbar
-        color="white"
-        flat
-      >
+      <v-toolbar color="white" flat>
         <v-toolbar-title>Airplanes</v-toolbar-title>
         <v-spacer></v-spacer>
         <AirplaneCreate @airplane-created="(airplaneId) => create(airplaneId)" />
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <AirplaneUpdate :airplane="item" @airplane-updated="()=> update(item.id)" />
-      <AirplaneDelete :airplane="item" @airplane-deleted="() =>remove(item.id)" />
+      <AirplaneUpdate :airplane="item" @airplane-updated="() => update(item.id)" />
+      <AirplaneDelete :airplane="item" @airplane-deleted="() => remove(item.id)" />
     </template>
   </v-data-table>
 </template>

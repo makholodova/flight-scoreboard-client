@@ -42,8 +42,8 @@ export default {
       menuItems: [
         { title: 'City', path: '/city', icon: 'mdi-city' },
         { title: 'Airline', path: '/airline' },
-        { title: 'Airplane', path: '/airplane' }
         { title: 'Pilot', path: '/pilot', icon: 'mdi-account' },
+        { title: 'Airplane', path: '/airplane', icon: 'mdi-airplane' }
       ]
     }
   }
