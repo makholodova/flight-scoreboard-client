@@ -31,7 +31,7 @@ function buttonOpenDialog() {
 <template>
   <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-icon class="me-2" size="small" v-bind="props" @click="buttonOpenDialog">
+      <v-icon class="me-2" size="small" title="Update" v-bind="props" @click="buttonOpenDialog">
         mdi-pencil
       </v-icon>
     </template>

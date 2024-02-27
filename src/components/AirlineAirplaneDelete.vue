@@ -20,13 +20,13 @@ function buttonDeleteClick(airlineId, airplaneId) {
 <template>
   <v-dialog v-model="state.dialog" width="540">
     <template v-slot:activator="{ props }">
-      <v-icon class="me-2" size="small" v-bind="props"> mdi-delete </v-icon>
+      <v-icon class="me-2" size="small" title="Delete" v-bind="props"> mdi-delete</v-icon>
     </template>
     <v-card>
       <v-card-title class="text-h5">Are you sure you want to delete this airplane?</v-card-title>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick"> Cancel </v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="buttonCancelClick"> Cancel</v-btn>
         <v-btn
           color="blue-darken-1"
           variant="text"

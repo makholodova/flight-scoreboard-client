@@ -22,7 +22,9 @@ function buttonCancelClick() {
 <template>
   <v-dialog v-model="state.dialog" persistent width="512">
     <template v-slot:activator="{ props }">
-      <v-btn color="green" icon="mdi-pencil" size="x-small" v-bind="props" variant="plain"></v-btn>
+      <v-icon class="me-2" size="small" title="Update" v-bind="props">
+        mdi-pencil
+      </v-icon>
     </template>
     <v-card>
       <v-card-title>
