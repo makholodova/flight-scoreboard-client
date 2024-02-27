@@ -1,10 +1,10 @@
 ﻿<script setup>
-import { reactive } from 'vue'
+import { nextTick, reactive } from 'vue'
 import { createAirlineAirplane, getAirplanes } from '@/plugins/api.js'
 
 const props = defineProps(['airlineId'])
 const emit = defineEmits(['airlineAirplaneCreated'])
-const state = reactive({ dialog: false, airlines: [], airplanes: [], newAirlineAirplane: {} })
+const state = reactive({ dialog: false, airplanes: [], newAirlineAirplane: {} })
 
 function buttonCreateClick() {
   createAirlineAirplane(props.airlineId, state.newAirlineAirplane)
@@ -14,7 +14,7 @@ function buttonCreateClick() {
 
 function buttonCancelClick() {
   state.dialog = false
-  this.$nextTick(() => {
+  nextTick(() => {
     state.newAirlineAirplane = {}
   })
 }

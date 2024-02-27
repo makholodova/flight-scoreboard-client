@@ -1,5 +1,5 @@
 ﻿<script setup>
-import { reactive } from 'vue'
+import { nextTick, reactive } from 'vue'
 import { createAirline } from '@/plugins/api.js'
 
 const emit = defineEmits(['airlineCreated'])
@@ -13,7 +13,7 @@ function buttonCreateClick() {
 
 function buttonCancelClick() {
   state.dialog = false
-  this.$nextTick(() => {
+  nextTick(() => {
     state.newAirline = {}
   })
 }

@@ -1,5 +1,5 @@
 ﻿<script setup>
-import { reactive } from 'vue'
+import { nextTick, reactive } from 'vue'
 import { getAirplanes, updateAirlineAirplane } from '@/plugins/api.js'
 
 const props = defineProps(['airlineAirplane'])
@@ -19,7 +19,7 @@ function buttonSaveClick() {
 
 function buttonCancelClick() {
   state.dialog = false
-  this.$nextTick(() => {
+  nextTick(() => {
     state.newAirlineAirplane = { ...props.airlineAirplane }
   })
 }
