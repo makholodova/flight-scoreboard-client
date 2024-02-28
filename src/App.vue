@@ -43,7 +43,8 @@ export default {
         { title: 'City', path: '/city', icon: 'mdi-city' },
         { title: 'Airline', path: '/airline', icon: 'mdi-badge-account-horizontal' },
         { title: 'Pilot', path: '/pilot', icon: 'mdi-account' },
-        { title: 'Airplane', path: '/airplane', icon: 'mdi-airplane' }
+        { title: 'Airplane', path: '/airplane', icon: 'mdi-airplane' },
+        { title: 'Flight', path: '/flight', icon: 'mdi-airplane' }
       ]
     }
   }

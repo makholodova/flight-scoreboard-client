@@ -34,6 +34,11 @@ const router = createRouter({
       path: '/:airlineId/airplanes',
       name: 'airlineAirplanes',
       component: () => import('../views/AirlineAirplaneView.vue')
+    },
+    {
+      path: '/flight',
+      name: 'flight',
+      component: () => import('../views/flightView.vue')
     }
   ]
 })
