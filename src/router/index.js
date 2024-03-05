@@ -39,6 +39,16 @@ const router = createRouter({
       path: '/flight',
       name: 'flight',
       component: () => import('../views/flightView.vue')
+    },
+    {
+      path: '/scoreboardArrival',
+      name: 'scoreboardArrival',
+      component: () => import('../views/scoreboardArrivalView.vue')
+    },
+    {
+      path: '/scoreboardDeparture',
+      name: 'scoreboardDeparture',
+      component: () => import('../views/scoreboardDepartureView.vue')
     }
   ]
 })

@@ -15,10 +15,15 @@ import { RouterView } from 'vue-router'
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>
-
     <v-toolbar density="compact">
       <v-app-bar-nav-icon class="d-flex d-sm-none" @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       <v-toolbar-title> Flight Scoreboard</v-toolbar-title>
+      <v-toolbar-items class="d-none d-sm-flex">
+        <v-btn v-for="item in scoreboards" :key="item.title" :to="item.path" flat>
+          <v-icon dark left>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn v-for="item in menuItems" :key="item.title" :to="item.path" flat>
@@ -27,7 +32,6 @@ import { RouterView } from 'vue-router'
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-
     <RouterView />
   </v-app>
 </template>
@@ -40,12 +44,18 @@ export default {
       appTitle: 'Flight Scoreboard',
       sidebar: false,
       menuItems: [
+
         { title: 'City', path: '/city', icon: 'mdi-city' },
         { title: 'Airline', path: '/airline', icon: 'mdi-badge-account-horizontal' },
         { title: 'Pilot', path: '/pilot', icon: 'mdi-account' },
         { title: 'Airplane', path: '/airplane', icon: 'mdi-airplane' },
-        { title: 'Flight', path: '/flight', icon: 'mdi-airplane' }
+        { title: 'Flight', path: '/flight', icon: 'mdi-table' }
+      ],
+      scoreboards: [
+        { title: 'Scoreboard arrival ', path: '/scoreboardArrival', icon: 'mdi-airplane-landing' },
+        { title: 'Scoreboard departure ', path: '/scoreboardDeparture', icon: 'mdi-airplane-takeoff' }
       ]
+
     }
   }
 }
