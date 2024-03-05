@@ -154,6 +154,7 @@ function buttonOpenDialog() {
                     <v-text-field
                       v-model="state.newFlight.departureTime"
                       label="Departure time*"
+                      required
                       type="datetime-local"
                     ></v-text-field>
                   </v-col>
@@ -161,6 +162,7 @@ function buttonOpenDialog() {
                     <v-text-field
                       v-model="state.newFlight.arrivalTime"
                       label="Arrival time*"
+                      required
                       type="datetime-local"
                     ></v-text-field>
                   </v-col>

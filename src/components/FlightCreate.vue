@@ -64,7 +64,7 @@ function buttonOpenDialog() {
   <v-dialog v-model="state.dialog"  persistent width="700">
     <template v-slot:activator="{ props }">
       <v-btn class="mb-2" v-bind="props" variant="tonal" @click="buttonOpenDialog">
-        Create airplane
+        Create flight
       </v-btn>
     </template>
     <v-card>
@@ -154,6 +154,7 @@ function buttonOpenDialog() {
                       v-model="state.newFlight.departureTime"
                       label="Departure time*"
                       type="datetime-local"
+                      required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
@@ -161,6 +162,7 @@ function buttonOpenDialog() {
                       v-model="state.newFlight.arrivalTime"
                       label="Arrival time*"
                       type="datetime-local"
+                      required
                     ></v-text-field>
                   </v-col>
                 </v-row>
