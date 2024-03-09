@@ -5,6 +5,7 @@ import FlightCreate from '@/components/FlightCreate.vue'
 import FlightDelete from '@/components/FlightDelete.vue'
 import FlightUpdate from '@/components/FlightUpdate.vue'
 import { parseDateString } from '@/plugins/dateHelpers.js'
+import FlightsCreate from '@/components/FlightsCreate.vue'
 
 const state = reactive({
   flights: [],
@@ -67,6 +68,7 @@ onMounted(() => {
         <v-toolbar-title>Flights</v-toolbar-title>
         <v-spacer></v-spacer>
         <FlightCreate @flight-created="(flightId) => create(flightId)" />
+        <FlightsCreate @flight-created="(flightId) => create(flightId)" />
       </v-toolbar>
     </template>
     <template v-slot:item.departureTime="{ value }" >

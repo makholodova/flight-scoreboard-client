@@ -45,6 +45,9 @@ export const createFlight = (newFlight) => axios.post('/flight', newFlight)
 export const updateFlight = (newFlight) => axios.put('/flight', newFlight)
 export  const deleteFlight =(flightId)=>axios.delete(`/flight/${flightId}`)
 
+//flights
+export const createFlights = (newFlight) => axios.post(`/flight/create-flights`, newFlight)
+
 //ScoreboardArrival
 export const getArrivalFlights = () => axios.get('/scoreboardArrival')
 
