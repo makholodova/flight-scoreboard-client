@@ -1,5 +1,6 @@
 ﻿<script setup>
 import { nextTick, reactive } from 'vue'
+import { vMaska } from 'maska'
 import { createFlights, getAirlineAirplanes, getAirlines, getCities, getPilotsByAirlineId } from '@/plugins/api.js'
 
 const props = defineProps(['airlineId'])
@@ -11,7 +12,7 @@ const state = reactive({
   airplanes: [],
   pilots: [],
   newFlight: { daysOfWeek: [] },
-  tab: 'main'
+  tab: 'datetime'
 
   /*rules: [
     value => {
@@ -20,11 +21,12 @@ const state = reactive({
       return 'You must enter a first name.'
     }]*/
 })
+const maskaTimeOptions = { mask: '##:##:00' }
 
 function buttonCreateClick() {
   console.log(state.newFlight)
   createFlights(state.newFlight)
-    /*.then((res) => emit('flightsCreated', res.data))*/
+    .then((res) => emit('flightsCreated', res.data))
     .finally(() => buttonCancelClick())
 }
 
@@ -77,54 +79,63 @@ function buttonOpenDialog() {
             v-model="state.tab"
             color="blue-darken-1"
           >
+            <v-tab value="datetime">
+              Date and time
+            </v-tab>
             <v-tab value="main">
               Main
             </v-tab>
             <v-tab value="terminalAndGate">
               Terminal and gate
             </v-tab>
-            <!--            <v-tab value="datetime">
-                          Date and time
-                        </v-tab>-->
+
           </v-tabs>
           <v-window v-model="state.tab">
-            <v-window-item value="main">
+            <v-window-item value="datetime">
               <v-container>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Monday"
-                  value="Monday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Tuesday"
-                  value="Tuesday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Wednesday"
-                  value="Wednesday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Thursday"
-                  value="Thursday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Friday"
-                  value="Friday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Saturday"
-                  value="Saturday"
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="state.newFlight.daysOfWeek "
-                  label="Sunday"
-                  value="Sunday"
-                ></v-checkbox>
+                <v-row>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    center-affix
+                    label="Monday"
+                    value="Monday"
+                  ></v-checkbox>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Tuesday"
+                    value="Tuesday"
+                  ></v-checkbox>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Wednesday"
+                    value="Wednesday"
+                  ></v-checkbox>
+                </v-row>
+
+                <v-row>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Thursday"
+                    value="Thursday"
+                  ></v-checkbox>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Friday"
+                    value="Friday"
+                  ></v-checkbox>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Saturday"
+                    value="Saturday"
+                  ></v-checkbox>
+                </v-row>
+                <v-row>
+                  <v-checkbox
+                    v-model="state.newFlight.daysOfWeek "
+                    label="Sunday"
+                    value="Sunday"
+                  ></v-checkbox>
+                </v-row>
                 <v-row>
                   <v-col cols="6">                                             <!--  :rules="state.rules"-->
                     <v-text-field
@@ -143,8 +154,31 @@ function buttonOpenDialog() {
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
-
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="state.newFlight.departureTime"
+                      v-maska:[maskaTimeOptions]
+                      label="Departure time*"
+                      required
+                      type="text"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="state.newFlight.durationTime"
+                      v-maska:[maskaTimeOptions]
+                      label="Duration time*"
+                      required
+                      type="text"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*indicates required field</small>
+            </v-window-item>
+            <v-window-item value="main">
+              <v-container>
                 <v-row>
                   <v-col cols="6">                                             <!--  :rules="state.rules"-->
                     <v-text-field
@@ -203,25 +237,6 @@ function buttonOpenDialog() {
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="state.newFlight.departureTime"
-                      label="Departure time*"
-                      required
-                      type="time"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="state.newFlight.durationTime"
-                      label="Duration time*"
-                      required
-                      type="time"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
               </v-container>
               <small>*indicates required field</small>
             </v-window-item>
@@ -257,58 +272,7 @@ function buttonOpenDialog() {
                 </v-row>
               </v-container>
             </v-window-item>
-            <!--            <v-window-item value="datetime">
-                          <v-container>
-                            <v-row>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.actualDepartureTime"
-                                  label="Actual departure time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.actualArrivalTime"
-                                  label="Actual arrival time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                            </v-row>
-                            <v-row>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.checkInStartTime"
-                                  label="Check-in start time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.checkInEndTime"
-                                  label="Check-in end time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                            </v-row>
-                            <v-row>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.boardingStartTime"
-                                  label="Boarding start time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="6">
-                                <v-text-field
-                                  v-model="state.newFlight.boardingEndTime"
-                                  label="Boarding end time"
-                                  type="datetime-local"
-                                ></v-text-field>
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                        </v-window-item>-->
+            
           </v-window>
         </v-card>
       </v-card-text>

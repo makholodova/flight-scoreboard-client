@@ -37,8 +37,16 @@ const state = reactive({
 })
 
 function create(id) {
-  console.log(id)
   getFlight(id).then((res) => state.flights.push(res.data))
+}
+
+function flightsCreate(flightsId) {
+  console.log(flightsId)
+  console.log(flightsId.length)
+  for (let i = 0; i<flightsId.length ; i++) {
+    create(flightsId[i]
+  )
+  }
 }
 
 function update(id) {
@@ -68,13 +76,13 @@ onMounted(() => {
         <v-toolbar-title>Flights</v-toolbar-title>
         <v-spacer></v-spacer>
         <FlightCreate @flight-created="(flightId) => create(flightId)" />
-        <FlightsCreate @flight-created="(flightId) => create(flightId)" />
+        <FlightsCreate @flights-created="(flightsId) => flightsCreate(flightsId)" />
       </v-toolbar>
     </template>
-    <template v-slot:item.departureTime="{ value }" >
+    <template v-slot:item.departureTime="{ value }">
       {{ parseDateString(value) }}
     </template>
-    <template v-slot:item.arrivalTime="{ value }" >
+    <template v-slot:item.arrivalTime="{ value }">
       {{ parseDateString(value) }}
     </template>
     <template v-slot:item.actions="{ item }">
